@@ -1,0 +1,21 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-primus
+  namespace: flux-system
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: enabled
+spec:
+  interval: 10m0s
+  dependsOn:
+    - name: infrastructure-primus
+    - name: infrastructure-secundus
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./apps/sandbox/eastus2/primus
+  prune: true
+  wait: true
+  timeout: 5m0s
+  decryption:
+    provider: sops

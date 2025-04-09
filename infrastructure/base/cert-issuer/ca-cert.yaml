@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: podinfo-ca  # Name of the Certificate resource
+  namespace: cert-manager  # Namespace where the Certificate and its Secret will be created
+spec:
+  isCA: true  # Indicates that this certificate will act as a Certificate Authority (CA)
+  commonName: podinfo.local  # The common name for the certificate, typically a domain or identifier
+  secretName: podinfo-ca-key-pair  # Name of the Kubernetes Secret where the certificate and key will be stored
+  issuerRef:
+    name: selfsigned-cluster-issuer  # Reference to the ClusterIssuer that will issue this certificate
+    kind: ClusterIssuer  # Specifies that the issuer is a ClusterIssuer (not a namespaced Issuer)

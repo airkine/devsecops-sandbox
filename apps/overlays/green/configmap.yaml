@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: podinfo-values
+  namespace: default
+data:
+  values.yaml: |
+    replicaCount: 2
+    ui:
+      message: "Green Deployment"
+      color: "#28a745"
+    podLabels:
+      version: "green"
+    service:
+      labels:
+        version: "green"

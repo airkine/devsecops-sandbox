@@ -1,0 +1,22 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infrastructure-secundus
+  namespace: flux-system
+  labels:
+    kustomize.toolkit.fluxcd.io/prune: enabled
+spec:
+  dependsOn:
+    - name: infrastructure-primus
+  interval: 10m0s
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/sandbox/eastus2/secundus
+  prune: true
+  timeout: 5m0s
+  healthChecks: # adding helth checks to ensure secrets can be pulled from azure key vault prior to monitoring deployment
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: external-secrets
+      namespace: external-secrets

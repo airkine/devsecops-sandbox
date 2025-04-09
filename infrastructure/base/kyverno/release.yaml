@@ -1,0 +1,68 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kyverno
+  namespace: kyverno
+spec:
+  releaseName: kyverno
+  interval: 5m
+  chart:
+    spec:
+      chart: kyverno
+      version: "~>3.1.4"
+      sourceRef:
+        kind: HelmRepository
+        name: kyverno
+        namespace: flux-system
+  values:
+    config:
+    # Prevent AKS Admission Enforcer from battling with Kyverno webhook
+      # webhookAnnotations: {
+      #   'admissions.enforcer/disabled': 'true'
+      # }
+    # grafana:
+    #   enabled: true
+    #   namespace: monitoring
+    # features:
+    #   tuf:
+    #     enabled: false
+    # upgrade:
+    #   fromV2: true
+    # existingImagePullSecrets:
+    #   - ghcr-ra-registry
+    # admissionController:
+    #   imagePullSecrets:
+    #     - name: ghcr-ra-registry
+      networkPolicy:
+        enabled: true
+      replicas: 3
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+              - ''
+              resources:
+                - secrets
+              verbs:
+                - get
+                - list
+                - watch
+      container:
+        resources:
+          limits:
+            cpu: 200m
+            memory: 500Mi
+          requests:
+            cpu: 50m
+            memory: 25Mi
+    reportsController:
+      resources:
+        limits:
+          memory: 512Mi
+        requests:
+          cpu: 50m
+          memory: 64Mi
+    nodeSelector: 
+      kubernetes.io/os: linux
+      kubernetes.azure.com/agentpool: default 
+      

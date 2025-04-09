@@ -1,0 +1,4 @@
+creation_rules:
+  - path_regex: .*.yaml$
+    encrypted_regex: ^(data|stringData|address|token|username|password|authId)$
+    azure_keyvault:  https://kv-kind024.vault.azure.net/keys/sops-key/409b0a4c38624839b556e493db3a81e3

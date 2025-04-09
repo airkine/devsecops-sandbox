@@ -1,0 +1,5 @@
+# apiVersion: kustomize.config.k8s.io/v1beta1
+# kind: Kustomization
+# resources:
+#   - azure-secret-store.yaml
+# # ESO secret store needs to be seperate from eso deployment because it needs to be accessible from other namespaces
